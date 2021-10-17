@@ -1,13 +1,10 @@
 const express = require('express');
 const app = express.Router();
-const httphelper = require('../helper/get');
+const httpHelper = require('../helper/get');
 const xl = require('excel4node');
 const { parse } = require('json2csv');
 
 
-
-const getExcel = async (req, res) => {
-}
 
 // GET / - for UI purposes get names of all genres
 app.get('/', async (req, res, next) => {
@@ -15,7 +12,9 @@ app.get('/', async (req, res, next) => {
   const typesUrl = "http://api.nytimes.com/svc/books/v3/lists/names.json?";
   const url = typesUrl + '&api-key=' + key;
 
-  httphelper(url).then(body => {
+
+  // using hhtphelper to get data from the url
+  httpHelper(url).then(body => {
     let data1 = [{}];
     let bookData = JSON.parse(body);
     bookData.results.map(data => {
@@ -37,7 +36,7 @@ app.get('/all', async (req, res, next) => {
   const url = all + 'api-key=' + key;
   console.log(url);
 
-  httphelper(url).then(body => {
+  httpHelper(url).then(body => {
     let data1 = [{}];
     let bookData = JSON.parse(body);
     bookData.results?.lists.forEach(data => {
@@ -56,6 +55,8 @@ app.get('/all', async (req, res, next) => {
         size: 12,
       }
     });
+
+    // filling the keyName as Columns
     Object.keys(data1[1]).forEach((key, index) => {
       let keyName = (key).split('_').join(" ").toUpperCase();
       ws.cell(1, index+1).string(keyName).style(style);
@@ -63,9 +64,13 @@ app.get('/all', async (req, res, next) => {
     data1.forEach((data, index1) => {
       Object.keys(data).forEach((key, index2) => {
         let value = (data[key] === null || data[key] === undefined) ? '' : data[key];
+
+        // check if value is object or not and then convert it to string
         if (typeof(value) === 'object') {
           value = value.reduce((acc, curr) => [...acc,` ${curr.name} | (${curr.url}) || \n`] , '');
         }
+
+        // inserting string values into excel
         ws.cell(index1+2, index2+1)
           .string((value).toString())
           .style(style);
@@ -90,14 +95,15 @@ app.get('/genres', async (req, res)=> {
   const genres = req.query.genreName;
   const typesUrl = "http://api.nytimes.com/svc/books/v3/lists.json?";
   const url = typesUrl +"list="+genres+ '&api-key=' + key;
-  httphelper(url).then(body => {
+  httpHelper(url).then(body => {
     let data1 = [];
     let bookData = JSON.parse(body);
     bookData.results.map(data => {
       data1.push(data.book_details);
     });
+
+    // sending required data to EJS
     res.render('genres', { title: 'SCROLL', bookList: data1, genreName: genres.split('-').join(' ').toUpperCase() });
-    //res.send(data1);
   })
     .catch((err) => {
       console.log(err);
@@ -115,12 +121,14 @@ app.get('/book', async (req, res)=> {
   const name = req.query.bookName;
   const typesUrl = "http://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?";
   const url = typesUrl +"title="+name+'&api-key=' + key;
-  httphelper(url).then(body => {
+  httpHelper(url).then(body => {
     let data1 = [];
     let bookData = JSON.parse(body);
     bookData.results.map(data => {
       data1.push(data);
     })
+
+    // converting bookdetails into csv using json2csv
     const csv = parse(data1);
     res.setHeader('Content-disposition', 'attachment; filename=book.csv');
     res.set('Content-Type', 'text/csv');
