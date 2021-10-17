@@ -57,11 +57,17 @@ app.get('/all', async (req, res, next) => {
       },
       numberFormat: '$#,##0.00; ($#,##0.00); -',
     });
-
+    Object.keys(data1[0]).forEach(key => {
+      console.log(key);
+    ws.cell(1, key).string(key).style(style);
+    });
     data1.forEach((data, index1) => {
       Object.keys(data).forEach((key, index2) => {
         let value = (data[key] === null || data[key] === undefined) ? '' : data[key];
-        ws.cell(index1+2, index2+2)
+        if (typeof(value) === 'object') {
+          value = value.reduce((acc, curr) => [...acc,` ${curr.name} | (${curr.url}) || \n`] , '');
+        }
+        ws.cell(index1+2, index2+1)
           .string((value).toString())
           .style(style);
       })
