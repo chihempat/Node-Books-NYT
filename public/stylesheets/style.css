@@ -1,0 +1,44 @@
+body {
+  padding: 50px;
+  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+
+button{
+  background-color: #ffffff;
+  color: rgb(8, 8, 8);
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+.btn {
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 0.1px solid #999;
+}
+.btn:hover{
+  color: #ffffff;
+}
+
+
+button:hover {
+  background-color: #080025;
+  color: #ffffff;
+}
+.bookTile{
+  display: flex;
+  flex-flow: row-wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.bookTile>p{
+   flex: 1;
+}

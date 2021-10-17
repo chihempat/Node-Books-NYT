@@ -1,0 +1,23 @@
+
+<h1> <%=title %>  </h1>
+<p>Welcome to  <%=title %> </p>
+<form method="get" action='/book'>
+<input type="search" name="bookName">
+<button type='submit'>Get Details</button>
+</form>
+<form method="get" action='/all'>
+<button class="btn" type='submit'>GET EXCEL SHEET OF ALL BOOKS</button>
+</form>
+<p>Click on the link to get Book details about that geners</p>
+<ul>
+  <%bookList.forEach((book) =>{ %>
+    <form method="get" action='/genres'>
+      <li><button type='submit' name="genreName" value=<%=book.encoded%>><%=book.title%></button></li>
+    </form>
+  <%})%>
+</ul>
+
+
+
+
+

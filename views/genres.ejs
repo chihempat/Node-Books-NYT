@@ -1,0 +1,26 @@
+
+<h1>Books - <%= genreName %> </h1>
+
+<div>
+    <div class="bookTile">
+      <h5>Title</h5>
+      <h5>Author</h5>
+      <h5>Description</h5>
+    </div>
+  <% bookList.forEach(function(book) { %>
+    <div class="bookTile">
+      <p><%= book[0].title %></p>
+      <p><%= book[0].author %></p>
+      <p><%= book[0].description %></p>
+    </div>
+  <% }); %>
+  </div>
+
+<!-- title: 'ONE-PUNCH MAN, VOL. 10',
+description: 'Saitama sneaks into a combat tournament in order to hone his martial arts skills.',
+contributor: 'by ONE and Yusuke Murata',
+author: 'ONE and Yusuke Murata',
+contributor_note: '',
+price: '0.00',
+age_group: '',
+pubspansher: 'VIZ Media', -->
