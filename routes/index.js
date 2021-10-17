@@ -54,12 +54,11 @@ app.get('/all', async (req, res, next) => {
       font: {
         color: '#000000',
         size: 12,
-      },
-      numberFormat: '$#,##0.00; ($#,##0.00); -',
+      }
     });
-    Object.keys(data1[0]).forEach(key => {
-      console.log(key);
-    ws.cell(1, key).string(key).style(style);
+    Object.keys(data1[1]).forEach((key, index) => {
+      let keyName = (key).split('_').join(" ").toUpperCase();
+      ws.cell(1, index+1).string(keyName).style(style);
     });
     data1.forEach((data, index1) => {
       Object.keys(data).forEach((key, index2) => {
