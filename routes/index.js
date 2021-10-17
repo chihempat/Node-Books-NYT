@@ -1,8 +1,13 @@
-var express = require('express');
-var app = express.Router();
+const express = require('express');
+const app = express.Router();
 const httphelper = require('../helper/get');
 const xl = require('excel4node');
 const { parse } = require('json2csv');
+
+
+
+const getExcel = async (req, res) => {
+}
 
 // GET / - for UI purposes get names of all genres
 app.get('/', async (req, res, next) => {
@@ -41,11 +46,11 @@ app.get('/all', async (req, res, next) => {
       })
     })
 
-    var wb = new xl.Workbook();
+    const wb = new xl.Workbook();
 
-    var ws = wb.addWorksheet('Sheet 1');
+    let ws = wb.addWorksheet('Sheet 1');
 
-    var style = wb.createStyle({
+    const style = wb.createStyle({
       font: {
         color: '#000000',
         size: 12,
@@ -61,8 +66,8 @@ app.get('/all', async (req, res, next) => {
           .style(style);
       })
     })
+    // download the excel file
     wb.write('book.xlsx', res);
-
   })
     .catch((err) => {
       console.log(err);
